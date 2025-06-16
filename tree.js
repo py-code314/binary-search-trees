@@ -52,28 +52,25 @@ class Tree {
 
   // Insert a node
   insert(value) {
-    let currentNode = this.root
+    // let currentNode = this.root
+    this.insertRecursive(value, this.root)
+  }
 
-    // if (currentNode === null) return new Node(value)
-
-    // Don't add if the value is already in the tree
-    if (value === currentNode.data) return this.root
-
-    while (currentNode) {
-      if (value < currentNode.data) {
-        if (currentNode.left === null) {
-          currentNode.left = new Node(value)
-          break
-        }
-        currentNode = currentNode.left
-      } else {
-        if (currentNode.right === null) {
-          currentNode.right = new Node(value)
-          break
-        }
-        currentNode = currentNode.right
-      }
+  // Recursive function to insert a node
+  insertRecursive(value, node) {
+    if (node === null) {
+      return new Node(value)
     }
+    // Duplicate values aren't allowed
+    if (value === node.data) {
+      return node
+    }
+    if (value < node.data) {
+      node.left = this.insertRecursive(value, node.left)
+    } else {
+      node.right = this.insertRecursive(value, node.right)
+    }
+    return node
   }
 
   // Print node like a tree
@@ -97,12 +94,12 @@ const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
 // Create an instance of Tree class
 const bst = new Tree(array)
-// bst.insert(0)
-// bst.insert(2)
-// bst.insert(6)
-// bst.insert(50)
-// bst.insert(100)
-// bst.insert(6346)
+bst.insert(0)
+bst.insert(2)
+bst.insert(6)
+bst.insert(50)
+bst.insert(100)
+bst.insert(6346)
 // console.log(bst.insert(8))
 bst.prettyPrint(bst.root)
 
