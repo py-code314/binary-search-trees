@@ -145,6 +145,38 @@ class Tree {
     return null
   }
 
+  // Traverse the tree in breadth-first level order
+  levelOrderIterative(callback) {
+    let currentNode = this.root
+
+    // Tree is empty
+    if (currentNode === null) return
+
+    // Initialize queue
+    const queue = []
+    queue.push(currentNode)
+
+    // Loop through the queue array
+    while (queue.length) {
+      currentNode = queue[0]
+      // Apply callback
+      callback(currentNode)
+
+      // Push left child
+      if (currentNode.left !== null) {
+        queue.push(currentNode.left)
+      }
+
+      // Push right child
+      if (currentNode.right !== null) {
+        queue.push(currentNode.right)
+      }
+
+      // Remove first node
+      queue.shift(currentNode)
+    }
+  }
+
   // Print node like a tree
   prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node === null) {
@@ -165,13 +197,11 @@ class Tree {
 }
 
 const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+// const array = [1, 7, 4, 23, 8, 9, 4, 6345, 324]
 
 // Create an instance of Tree class
 const bst = new Tree(array)
 
 bst.prettyPrint(bst.root)
 
-// console.log(bst.find(9))
-// console.log(bst.find(6345))
-// console.log(bst.find(67))
-// console.log(bst.find(6))
+// bst.levelOrderIterative((node) => console.log(node.data))
