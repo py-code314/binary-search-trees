@@ -14,20 +14,19 @@ class Tree {
     const arraySet = new Set(array)
     // Convert it back to array and sort
     const sortedArray = [...arraySet].sort((a, b) => a - b)
-    
+
     return sortedArray
   }
 
   // Function to build a binary tree
   buildTree(array) {
     const processedArray = this.processArray(array)
-   
+
     const startIndex = 0
     const endIndex = processedArray.length - 1
 
     return this.sortedArrayToBSTRecur(processedArray, startIndex, endIndex)
   }
-
 
   // Recursive function to build a binary tree
   sortedArrayToBSTRecur(array, start, end) {
@@ -64,11 +63,11 @@ class Tree {
     // Duplicate values aren't allowed
     if (value === node.data) {
       return node
-     }
+    }
     if (value < node.data) {
       // Add to left
       node.left = this.insertRecursive(value, node.left)
-    } else if(value > node.data) {
+    } else if (value > node.data) {
       // Add to right
       node.right = this.insertRecursive(value, node.right)
     }
@@ -92,14 +91,15 @@ class Tree {
 
     // Value isn't found in the tree
     if (currentNode === null) return this.root
-    
+
     // Node to be deleted has at most one child
     if (currentNode.left === null || currentNode.right === null) {
-      let childNode = currentNode.left === null ? currentNode.right : currentNode.left
+      let childNode =
+        currentNode.left === null ? currentNode.right : currentNode.left
 
       // Node to be deleted is the root node
       if (previousNode === null) return childNode
-      
+
       // Matched node is internal node
       if (previousNode.left === currentNode) {
         previousNode.left = childNode
@@ -117,6 +117,7 @@ class Tree {
         tempNode = tempNode.left
       }
 
+      // Check for the presence of left child for matched node
       if (prevNode != null) {
         prevNode.left = tempNode.right
       } else {
@@ -125,7 +126,23 @@ class Tree {
 
       currentNode.data = tempNode.data
     }
+  }
 
+  // Return the node with given value
+  find(value) {
+    let currentNode = this.root
+
+    while (currentNode) {
+      if (value < currentNode.data) {
+        currentNode = currentNode.left
+      } else if (value > currentNode.data) {
+        currentNode = currentNode.right
+      } else {
+        return currentNode
+      }
+    }
+
+    return null
   }
 
   // Print node like a tree
@@ -134,7 +151,11 @@ class Tree {
       return
     }
     if (node.right !== null) {
-      this.prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false)
+      this.prettyPrint(
+        node.right,
+        `${prefix}${isLeft ? '│   ' : '    '}`,
+        false
+      )
     }
     console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`)
     if (node.left !== null) {
@@ -143,19 +164,14 @@ class Tree {
   }
 }
 
-
 const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-
 
 // Create an instance of Tree class
 const bst = new Tree(array)
 
-// bst.deleteItem(6345)
-// bst.deleteItem(4)
-// bst.deleteItem(324)
-// bst.deleteItem(50)
-
 bst.prettyPrint(bst.root)
 
-
-
+// console.log(bst.find(9))
+// console.log(bst.find(6345))
+// console.log(bst.find(67))
+// console.log(bst.find(6))
