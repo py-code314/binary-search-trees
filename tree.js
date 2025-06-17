@@ -64,13 +64,68 @@ class Tree {
     // Duplicate values aren't allowed
     if (value === node.data) {
       return node
-    }
+     }
     if (value < node.data) {
+      // Add to left
       node.left = this.insertRecursive(value, node.left)
-    } else {
+    } else if(value > node.data) {
+      // Add to right
       node.right = this.insertRecursive(value, node.right)
     }
     return node
+  }
+
+  // Delete a given node
+  deleteItem(value) {
+    let currentNode = this.root
+    let previousNode = null
+
+    // Find the node with the given value
+    while (currentNode != null && currentNode.data != value) {
+      previousNode = currentNode
+      if (value < currentNode.data) {
+        currentNode = currentNode.left
+      } else {
+        currentNode = currentNode.right
+      }
+    }
+
+    // Value isn't found in the tree
+    if (currentNode === null) return this.root
+    
+    // Node to be deleted has at most one child
+    if (currentNode.left === null || currentNode.right === null) {
+      let childNode = currentNode.left === null ? currentNode.right : currentNode.left
+
+      // Node to be deleted is the root node
+      if (previousNode === null) return childNode
+      
+      // Matched node is internal node
+      if (previousNode.left === currentNode) {
+        previousNode.left = childNode
+      } else {
+        previousNode.right = childNode
+      }
+    } else {
+      // Matched node has left and right children
+      let prevNode = null
+      let tempNode = currentNode.right
+
+      // Traverse the tree and find the next highest node
+      while (tempNode.left != null) {
+        prevNode = tempNode
+        tempNode = tempNode.left
+      }
+
+      if (prevNode != null) {
+        prevNode.left = tempNode.right
+      } else {
+        currentNode.right = tempNode.right
+      }
+
+      currentNode.data = tempNode.data
+    }
+
   }
 
   // Print node like a tree
@@ -94,13 +149,12 @@ const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
 // Create an instance of Tree class
 const bst = new Tree(array)
-bst.insert(0)
-bst.insert(2)
-bst.insert(6)
-bst.insert(50)
-bst.insert(100)
-bst.insert(6346)
-// console.log(bst.insert(8))
+
+// bst.deleteItem(6345)
+// bst.deleteItem(4)
+// bst.deleteItem(324)
+// bst.deleteItem(50)
+
 bst.prettyPrint(bst.root)
 
 
