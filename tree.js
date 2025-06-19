@@ -199,9 +199,31 @@ class Tree {
     // Push the next node into queue
     if (currentNode.left !== null) queue.push(currentNode.left)
     if (currentNode.right !== null) queue.push(currentNode.right)
-    
+
     this.levelOrderRecursive(callback, queue)
   }
+
+  // Tree traversal starting with the root
+  preOrder(callback) {
+    // Throw error if the argument isn't a function
+    if (typeof callback !== 'function') {
+      throw new Error('No callback function passed')
+    }
+    let currentNode = this.root
+    if (currentNode === null) return
+    // Initialize stack array
+    const stack = [currentNode]
+
+    while (stack.length > 0) {
+      currentNode = stack.pop()
+      callback(currentNode)
+
+      if (currentNode.right !== null) stack.push(currentNode.right)
+      if (currentNode.left !== null) stack.push(currentNode.left)
+    }
+  }
+
+  // inOrder(callback) {}
 
   // Print node like a tree
   prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -230,4 +252,4 @@ const bst = new Tree(array)
 
 bst.prettyPrint(bst.root)
 
-bst.levelOrderRecursive((node) => console.log(node.data))
+bst.preOrder((node) => console.log(node.data))
