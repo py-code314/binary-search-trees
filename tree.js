@@ -182,6 +182,27 @@ class Tree {
     }
   }
 
+  // Recursive function to traverse the tree in level order
+  levelOrderRecursive(callback, queue = [this.root]) {
+    // Throw error if the argument isn't a function
+    if (typeof callback !== 'function') {
+      throw new Error('No callback function passed')
+    }
+
+    // Base case
+    if (!queue.length) return
+
+    // Apply callback
+    let currentNode = queue.shift()
+    callback(currentNode)
+
+    // Push the next node into queue
+    if (currentNode.left !== null) queue.push(currentNode.left)
+    if (currentNode.right !== null) queue.push(currentNode.right)
+    
+    this.levelOrderRecursive(callback, queue)
+  }
+
   // Print node like a tree
   prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node === null) {
@@ -209,4 +230,4 @@ const bst = new Tree(array)
 
 bst.prettyPrint(bst.root)
 
-// bst.levelOrderIterative((node) => console.log(node.data))
+bst.levelOrderRecursive((node) => console.log(node.data))
