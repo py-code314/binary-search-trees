@@ -147,6 +147,11 @@ class Tree {
 
   // Traverse the tree in breadth-first level order
   levelOrderIterative(callback) {
+    // Throw error if no argument is passed
+    if (typeof callback !== 'function') {
+      throw new Error('No callback function passed')
+    }
+
     let currentNode = this.root
 
     // Tree is empty
