@@ -265,13 +265,12 @@ class Tree {
     this.traverseRootMiddle(callback, currentNode)
   }
 
-
   // Recursive helper function with root last
   traverseRootLast(callback, currentNode) {
     if (currentNode === null) return
 
     this.traverseRootLast(callback, currentNode.left)
-    
+
     this.traverseRootLast(callback, currentNode.right)
     callback(currentNode)
   }
@@ -286,6 +285,26 @@ class Tree {
     let currentNode = this.root
 
     this.traverseRootLast(callback, currentNode)
+  }
+
+  // Find the height of the node with given value
+  height(value) {
+    // Find the match
+    let currentNode = this.find(value)
+
+    if (currentNode) {
+      let count = 0
+      while (currentNode.left !== null || currentNode.right !== null) {
+        count++
+        if (currentNode.left !== null) {
+          currentNode = currentNode.left
+        } else if (currentNode.right !== null) {
+          currentNode = currentNode.right
+        }
+      }
+      return count
+    }
+    return null
   }
 
   // Print node like a tree
@@ -309,11 +328,18 @@ class Tree {
 
 const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
-
-
 // Create an instance of Tree class
 const bst = new Tree(array)
 
 bst.prettyPrint(bst.root)
 
-bst.postOrder((node) => console.log(node.data))
+console.log(bst.height(8))
+console.log(bst.height(4))
+console.log(bst.height(1))
+console.log(bst.height(3))
+console.log(bst.height(2))
+
+
+
+
+
