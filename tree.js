@@ -295,21 +295,31 @@ class Tree {
   // Find the height of the node with given value
   height(value) {
     // Find the match
-    let currentNode = this.find(value)
+    let matchedNode = this.find(value)
+    if (!matchedNode) return null
 
-    if (currentNode) {
-      let count = 0
-      while (currentNode.left !== null || currentNode.right !== null) {
-        count++
-        if (currentNode.left !== null) {
-          currentNode = currentNode.left
-        } else if (currentNode.right !== null) {
-          currentNode = currentNode.right
+    // Start at -1 for edge based case
+    let nodeHeight = -1
+    // Initialize queue with matched node
+    let queue = [matchedNode]
+    while (queue.length) {
+      nodeHeight++
+      let levelNumber = queue.length
+
+      // Process all nodes in the same level
+      for (let i = 0; i < levelNumber; i++) {
+        let currentNode = queue.shift()
+        if (currentNode.left) {
+          queue.push(currentNode.left)
+        }
+        if (currentNode.right) {
+          queue.push(currentNode.right)
         }
       }
-      return count
     }
-    return null
+
+    return nodeHeight
+    
   }
 
   // Find the depth of given node
@@ -320,6 +330,22 @@ class Tree {
       return this.nodeDepth
     }
     return null
+  }
+
+  // Check for balanced tree
+  isBalanced() {
+    let currentNode = this.root
+
+    let count = 0
+    while (currentNode.left !== null || currentNode.right !== null) {
+      count++
+      if (currentNode.left !== null) {
+        currentNode = currentNode.left
+      } else if (currentNode.right !== null) {
+        currentNode = currentNode.right
+      }
+    }
+    return count
   }
 
   // Print node like a tree
@@ -341,21 +367,25 @@ class Tree {
   }
 }
 
-const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+// const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+const array = [
+  1, 7, 4, 23, 8, 9, 4, 2, 3, 5, 7, 9, 67, 6345, 324, 50, 100, 75, 85,
+]
 
 // Create an instance of Tree class
 const bst = new Tree(array)
 
 bst.prettyPrint(bst.root)
 
-console.log(bst.depth(8))
-console.log(bst.depth(4))
-console.log(bst.depth(5))
-console.log(bst.depth(6345))
-console.log(bst.depth(2))
-
-
-
-
-
-
+// console.log(bst.isBalanced())
+console.log(bst.height(9))
+console.log(bst.height(75))
+console.log(bst.height(4))
+console.log(bst.height(2))
+console.log(bst.height(50))
+console.log(bst.height(100))
+console.log(bst.height(3))
+console.log(bst.height(8))
+console.log(bst.height(23))
+console.log(bst.height(324))
+console.log(bst.height(6345))
