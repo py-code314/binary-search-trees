@@ -6,6 +6,7 @@ class Tree {
   constructor(array) {
     this.array = array
     this.root = this.buildTree(this.array)
+    this.nodeDepth = 0
   }
 
   // Helper function to process array
@@ -134,8 +135,12 @@ class Tree {
 
     while (currentNode) {
       if (value < currentNode.data) {
+        this.nodeDepth++
+        // console.log('Left:', this.nodeDepth)
         currentNode = currentNode.left
       } else if (value > currentNode.data) {
+        this.nodeDepth++
+        // console.log('Right:', this.nodeDepth)
         currentNode = currentNode.right
       } else {
         return currentNode
@@ -307,6 +312,16 @@ class Tree {
     return null
   }
 
+  // Find the depth of given node
+  depth(value) {
+    this.nodeDepth = 0
+    const matchedNode = this.find(value)
+    if (matchedNode) {
+      return this.nodeDepth
+    }
+    return null
+  }
+
   // Print node like a tree
   prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node === null) {
@@ -333,11 +348,12 @@ const bst = new Tree(array)
 
 bst.prettyPrint(bst.root)
 
-console.log(bst.height(8))
-console.log(bst.height(4))
-console.log(bst.height(1))
-console.log(bst.height(3))
-console.log(bst.height(2))
+console.log(bst.depth(8))
+console.log(bst.depth(4))
+console.log(bst.depth(5))
+console.log(bst.depth(6345))
+console.log(bst.depth(2))
+
 
 
 
