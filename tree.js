@@ -223,7 +223,28 @@ class Tree {
     }
   }
 
-  // inOrder(callback) {}
+  // Recursive method for pre order traversal
+  preOrderRecursive(callback) {
+    // Throw error if the argument isn't a function
+    if (typeof callback !== 'function') {
+      throw new Error('No callback function passed')
+    }
+
+    let currentNode = this.root
+
+    // Helper function
+    this.traverseRootFirst(callback, currentNode)
+  }
+
+  // Recursive helper function
+  traverseRootFirst(callback, currentNode) {
+    if (currentNode === null) return
+    callback(currentNode)
+    this.traverseTree(callback, currentNode.left)
+    this.traverseTree(callback, currentNode.right)
+  }
+
+  
 
   // Print node like a tree
   prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -252,4 +273,5 @@ const bst = new Tree(array)
 
 bst.prettyPrint(bst.root)
 
-bst.preOrder((node) => console.log(node.data))
+// bst.preOrderRecursive((node) => console.log(node.data))
+bst.inOrder((node) => console.log(node.data))
