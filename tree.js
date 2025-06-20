@@ -18,16 +18,6 @@ class Tree {
     return sortedArray
   }
 
-  // Function to build a binary tree
-  buildTree(array) {
-    const processedArray = this.processArray(array)
-
-    const startIndex = 0
-    const endIndex = processedArray.length - 1
-
-    return this.sortedArrayToBSTRecur(processedArray, startIndex, endIndex)
-  }
-
   // Recursive function to build a binary tree
   sortedArrayToBSTRecur(array, start, end) {
     // Base case
@@ -47,6 +37,16 @@ class Tree {
     // console.log(rootNode)
 
     return rootNode
+  }
+
+  // Function to build a binary tree
+  buildTree(array) {
+    const processedArray = this.processArray(array)
+
+    const startIndex = 0
+    const endIndex = processedArray.length - 1
+
+    return this.sortedArrayToBSTRecur(processedArray, startIndex, endIndex)
   }
 
   // Insert a node
@@ -223,7 +223,15 @@ class Tree {
     }
   }
 
-  // Recursive method for pre order traversal
+  // Recursive helper function with root first
+  traverseRootFirst(callback, currentNode) {
+    if (currentNode === null) return
+    callback(currentNode)
+    this.traverseTree(callback, currentNode.left)
+    this.traverseTree(callback, currentNode.right)
+  }
+
+  // Recursive method for pre-order traversal
   preOrderRecursive(callback) {
     // Throw error if the argument isn't a function
     if (typeof callback !== 'function') {
@@ -236,15 +244,26 @@ class Tree {
     this.traverseRootFirst(callback, currentNode)
   }
 
-  // Recursive helper function
-  traverseRootFirst(callback, currentNode) {
+  // Recursive helper function with root middle
+  traverseRootMiddle(callback, currentNode) {
     if (currentNode === null) return
+
+    this.traverseRootMiddle(callback, currentNode.left)
     callback(currentNode)
-    this.traverseTree(callback, currentNode.left)
-    this.traverseTree(callback, currentNode.right)
+    this.traverseRootMiddle(callback, currentNode.right)
   }
 
-  
+  // Recursive method for in-order tree traversal
+  inOrder(callback) {
+    // Throw error if argument isn't a function
+    if (typeof callback !== 'function') {
+      throw new Error('No callback function passed')
+    }
+
+    let currentNode = this.root
+
+    this.traverseRootMiddle(callback, currentNode)
+  }
 
   // Print node like a tree
   prettyPrint = (node, prefix = '', isLeft = true) => {
