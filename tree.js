@@ -265,6 +265,29 @@ class Tree {
     this.traverseRootMiddle(callback, currentNode)
   }
 
+
+  // Recursive helper function with root last
+  traverseRootLast(callback, currentNode) {
+    if (currentNode === null) return
+
+    this.traverseRootLast(callback, currentNode.left)
+    
+    this.traverseRootLast(callback, currentNode.right)
+    callback(currentNode)
+  }
+
+  // Recursive method for post-order tree traversal
+  postOrder(callback) {
+    // Throw error if argument isn't a function
+    if (typeof callback !== 'function') {
+      throw new Error('No callback function passed')
+    }
+
+    let currentNode = this.root
+
+    this.traverseRootLast(callback, currentNode)
+  }
+
   // Print node like a tree
   prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node === null) {
@@ -285,12 +308,12 @@ class Tree {
 }
 
 const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-// const array = [1, 7, 4, 23, 8, 9, 4, 6345, 324]
+
+
 
 // Create an instance of Tree class
 const bst = new Tree(array)
 
 bst.prettyPrint(bst.root)
 
-// bst.preOrderRecursive((node) => console.log(node.data))
-bst.inOrder((node) => console.log(node.data))
+bst.postOrder((node) => console.log(node.data))
