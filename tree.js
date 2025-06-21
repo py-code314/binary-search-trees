@@ -292,16 +292,12 @@ class Tree {
     this.traverseRootLast(callback, currentNode)
   }
 
-  // Find the height of the node with given value
-  height(value) {
-    // Find the match
-    let matchedNode = this.find(value)
-    if (!matchedNode) return null
-
+  // Calculate the height of tree
+  calculateHeight(node) {
     // Start at -1 for edge based case
     let nodeHeight = -1
     // Initialize queue with matched node
-    let queue = [matchedNode]
+    let queue = [node]
     while (queue.length) {
       nodeHeight++
       let levelNumber = queue.length
@@ -317,10 +313,18 @@ class Tree {
         }
       }
     }
-
     return nodeHeight
-    
   }
+
+  // Find the height of the node with given value
+  height(value) {
+    // Find the match
+    let matchedNode = this.find(value)
+    if (!matchedNode) return null
+
+    return this.calculateHeight(matchedNode)
+  }
+
 
   // Find the depth of given node
   depth(value) {
@@ -379,12 +383,11 @@ bst.prettyPrint(bst.root)
 
 // console.log(bst.isBalanced())
 console.log(bst.height(9))
-console.log(bst.height(75))
 console.log(bst.height(4))
+console.log(bst.height(75))
 console.log(bst.height(2))
-console.log(bst.height(50))
 console.log(bst.height(100))
-console.log(bst.height(3))
+console.log(bst.height(1))
 console.log(bst.height(8))
 console.log(bst.height(23))
 console.log(bst.height(324))
