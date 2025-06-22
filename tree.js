@@ -339,30 +339,46 @@ class Tree {
     return this.getHeightRecursive(matchedNode)
   }
 
+  // Get the depth of the node in binary tree
+  getDepthRecursive(node, targetValue) {
+    // Base cases
+    if (node === null) return null
+    if (targetValue === node.data) return 0
+
+    // Value is less than current node value
+    if (targetValue < node.data) {
+      const leftDepth = this.getDepthRecursive(node.left, targetValue)
+      return leftDepth === null ? null : leftDepth + 1
+    }
+
+    // Value is greater than current node value
+    const rightDepth = this.getDepthRecursive(node.right, targetValue)
+    return rightDepth === null ? null : rightDepth + 1
+  }
+
   // Find the depth of given node
   depth(value) {
-    this.nodeDepth = 0
-    const matchedNode = this.find(value)
-    if (matchedNode) {
-      return this.nodeDepth
-    }
-    return null
+    let currentNode = this.root
+
+    return this.getDepthRecursive(currentNode, value)
   }
 
   // Recursive function to check the balance of a tree
   isBalancedRecursive(node) {
     // Base case
     if (node === null) return true
-    
+
     // Get the heights of left and right sub-trees
     const leftSubTreeHeight = this.getHeightRecursive(node.left)
     const rightSubTreeHeight = this.getHeightRecursive(node.right)
 
     // Check the difference between the two
     if (Math.abs(leftSubTreeHeight - rightSubTreeHeight) > 1) return false
-    
-    return this.isBalancedRecursive(node.left) && this.isBalancedRecursive(node.right)
-   
+
+    return (
+      this.isBalancedRecursive(node.left) &&
+      this.isBalancedRecursive(node.right)
+    )
   }
 
   // Check if tree is balanced
@@ -391,7 +407,9 @@ class Tree {
   }
 }
 
-const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 25, 26, 27, 28, 29, 30, 67, 6345, 324, 6500]
+const array = [
+  1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 25, 26, 27, 28, 29, 30, 67, 6345, 324, 6500,
+]
 // const array = [
 //   1, 7, 4, 23, 8, 9, 4, 2, 3, 5, 7, 9, 67, 6345, 324, 50, 100, 75, 85,
 // ]
@@ -403,5 +421,6 @@ bst.insert(6501)
 
 bst.prettyPrint(bst.root)
 
-console.log(bst.isBalanced())
-
+console.log(bst.depth(23))
+console.log(bst.depth(6501))
+console.log(bst.depth(650))
