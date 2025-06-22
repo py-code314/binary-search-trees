@@ -321,7 +321,7 @@ class Tree {
   getHeightRecursive(node) {
     // Base case
     if (node === null) return -1
-    
+
     // Calculate heights of left and right sub-trees
     let leftSubTreeHeight = this.getHeightRecursive(node.left)
     let rightSubTreeHeight = this.getHeightRecursive(node.right)
@@ -349,24 +349,27 @@ class Tree {
     return null
   }
 
+  // Recursive function to check the balance of a tree
+  isBalancedRecursive(node) {
+    // Base case
+    if (node === null) return true
+    
+    // Get the heights of left and right sub-trees
+    const leftSubTreeHeight = this.getHeightRecursive(node.left)
+    const rightSubTreeHeight = this.getHeightRecursive(node.right)
+
+    // Check the difference between the two
+    if (Math.abs(leftSubTreeHeight - rightSubTreeHeight) > 1) return false
+    
+    return this.isBalancedRecursive(node.left) && this.isBalancedRecursive(node.right)
+   
+  }
+
   // Check if tree is balanced
   isBalanced() {
-    const queue = [this.root]
+    let root = this.root
 
-    while (queue.length) {
-      const currentNode = queue.shift()
-      const leftHeight = currentNode.left ? this.calculateHeight(currentNode.left) : 0
-      const rightHeight = currentNode.right ? this.calculateHeight(currentNode.right) : 0
-
-      if (Math.abs(leftHeight - rightHeight) > 1) {
-        return false
-      }
-
-      if (currentNode.left) queue.push(currentNode.left)
-      if (currentNode.right) queue.push(currentNode.right)
-    }
-
-    return true
+    return this.isBalancedRecursive(root)
   }
 
   // Print node like a tree
@@ -388,24 +391,17 @@ class Tree {
   }
 }
 
-// const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-const array = [
-  1, 7, 4, 23, 8, 9, 4, 2, 3, 5, 7, 9, 67, 6345, 324, 50, 100, 75, 85,
-]
+const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 25, 26, 27, 28, 29, 30, 67, 6345, 324, 6500]
+// const array = [
+//   1, 7, 4, 23, 8, 9, 4, 2, 3, 5, 7, 9, 67, 6345, 324, 50, 100, 75, 85,
+// ]
 
 // Create an instance of Tree class
 const bst = new Tree(array)
 
-
+bst.insert(6501)
 
 bst.prettyPrint(bst.root)
 
-console.log(bst.height(9))
-// console.log(bst.height(50))
-// console.log(bst.height(50))
-// console.log(bst.height(50))
-// console.log(bst.height(50))
-// console.log(bst.height(50))
-// console.log(bst.height(50))
-// console.log(bst.height(50))
-// console.log(bst.height(50))
+console.log(bst.isBalanced())
+
