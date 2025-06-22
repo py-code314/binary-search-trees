@@ -292,7 +292,7 @@ class Tree {
     this.traverseRootLast(callback, currentNode)
   }
 
-  // Calculate the height of tree
+  // Calculate the height of node iteratively
   calculateHeight(node) {
     // Start at -1 for edge based case
     let nodeHeight = -1
@@ -313,7 +313,20 @@ class Tree {
         }
       }
     }
+    // console.log('Node Height:', nodeHeight)
     return nodeHeight
+  }
+
+  // Recursive function to get height of a node
+  getHeightRecursive(node) {
+    // Base case
+    if (node === null) return -1
+    
+    // Calculate heights of left and right sub-trees
+    let leftSubTreeHeight = this.getHeightRecursive(node.left)
+    let rightSubTreeHeight = this.getHeightRecursive(node.right)
+
+    return Math.max(leftSubTreeHeight, rightSubTreeHeight) + 1
   }
 
   // Find the height of the node with given value
@@ -322,9 +335,9 @@ class Tree {
     let matchedNode = this.find(value)
     if (!matchedNode) return null
 
-    return this.calculateHeight(matchedNode)
+    // return this.calculateHeight(matchedNode)
+    return this.getHeightRecursive(matchedNode)
   }
-
 
   // Find the depth of given node
   depth(value) {
@@ -336,20 +349,24 @@ class Tree {
     return null
   }
 
-  // Check for balanced tree
+  // Check if tree is balanced
   isBalanced() {
-    let currentNode = this.root
+    const queue = [this.root]
 
-    let count = 0
-    while (currentNode.left !== null || currentNode.right !== null) {
-      count++
-      if (currentNode.left !== null) {
-        currentNode = currentNode.left
-      } else if (currentNode.right !== null) {
-        currentNode = currentNode.right
+    while (queue.length) {
+      const currentNode = queue.shift()
+      const leftHeight = currentNode.left ? this.calculateHeight(currentNode.left) : 0
+      const rightHeight = currentNode.right ? this.calculateHeight(currentNode.right) : 0
+
+      if (Math.abs(leftHeight - rightHeight) > 1) {
+        return false
       }
+
+      if (currentNode.left) queue.push(currentNode.left)
+      if (currentNode.right) queue.push(currentNode.right)
     }
-    return count
+
+    return true
   }
 
   // Print node like a tree
@@ -379,16 +396,16 @@ const array = [
 // Create an instance of Tree class
 const bst = new Tree(array)
 
+
+
 bst.prettyPrint(bst.root)
 
-// console.log(bst.isBalanced())
 console.log(bst.height(9))
-console.log(bst.height(4))
-console.log(bst.height(75))
-console.log(bst.height(2))
-console.log(bst.height(100))
-console.log(bst.height(1))
-console.log(bst.height(8))
-console.log(bst.height(23))
-console.log(bst.height(324))
-console.log(bst.height(6345))
+// console.log(bst.height(50))
+// console.log(bst.height(50))
+// console.log(bst.height(50))
+// console.log(bst.height(50))
+// console.log(bst.height(50))
+// console.log(bst.height(50))
+// console.log(bst.height(50))
+// console.log(bst.height(50))
