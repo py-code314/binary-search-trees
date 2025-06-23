@@ -1,15 +1,14 @@
 // Import Node class
 import Node from './node.js'
 
-// Tree class
+/* Create a Tree class */
 export default class Tree {
   constructor(array) {
     this.array = array
     this.root = this.buildTree(this.array)
-    // this.nodeDepth = 0
   }
 
-  // Helper function to process array
+  /* Return a sorted array with duplicates removed */
   processArray(array) {
     // Make a set from array
     const arraySet = new Set(array)
@@ -19,7 +18,7 @@ export default class Tree {
     return sortedArray
   }
 
-  // Recursive function to build a binary tree
+  /* A recursive function to create a balanced binary search tree */
   sortedArrayToBSTRecur(array, start, end) {
     // Base case
     if (start > end) return null
@@ -39,31 +38,31 @@ export default class Tree {
     return rootNode
   }
 
-  // Function to build a binary tree
+  /* Creates a balanced binary search tree from the given array */
   buildTree(array) {
+    // Process the array input
     const processedArray = this.processArray(array)
 
+    // Assign values to start and end
     const startIndex = 0
     const endIndex = processedArray.length - 1
 
     return this.sortedArrayToBSTRecur(processedArray, startIndex, endIndex)
   }
 
-  // Insert a node
-  insert(value) {
-    // let currentNode = this.root
-    this.insertRecursive(value, this.root)
-  }
-
-  // Recursive function to insert a node
+  /* Recursively inserts a given value into the binary search tree */
   insertRecursive(value, node) {
+    // Base case
     if (node === null) {
       return new Node(value)
     }
+
     // Duplicate values aren't allowed
     if (value === node.data) {
       return node
     }
+
+    // Compare the value to current node value
     if (value < node.data) {
       // Add to left
       node.left = this.insertRecursive(value, node.left)
@@ -71,10 +70,16 @@ export default class Tree {
       // Add to right
       node.right = this.insertRecursive(value, node.right)
     }
+
     return node
   }
 
-  // Delete a given node
+  /* Inserts a given value into the binary search tree */
+  insert(value) {
+    this.insertRecursive(value, this.root)
+  }
+
+  /* Deletes a given value from the binary search tree */
   deleteItem(value) {
     let currentNode = this.root
     let previousNode = null
@@ -128,18 +133,15 @@ export default class Tree {
     }
   }
 
-  // Return the node with given value
+  /* Search for the given value in the binary search tree */
   find(value) {
     let currentNode = this.root
 
     while (currentNode) {
+      // Compare the value to current node value
       if (value < currentNode.data) {
-        // this.nodeDepth++
-        // console.log('Left:', this.nodeDepth)
         currentNode = currentNode.left
       } else if (value > currentNode.data) {
-        // this.nodeDepth++
-        // console.log('Right:', this.nodeDepth)
         currentNode = currentNode.right
       } else {
         return currentNode
@@ -151,38 +153,33 @@ export default class Tree {
 
   // Traverse the tree in breadth-first level order
   levelOrderIterative(callback) {
-    // Throw error if no argument is passed
+    // Throw error if the argument isn't a function
     if (typeof callback !== 'function') {
-      throw new Error('No callback function passed')
+      throw new Error('No callback function passed.')
     }
 
-    let currentNode = this.root
-
-    // Tree is empty
-    if (currentNode === null) return
+    // Base case
+    const root = this.root
+    if (root === null) return
 
     // Initialize queue
-    const queue = []
-    queue.push(currentNode)
+    const queue = [root]
 
-    // Loop through the queue array
-    while (queue.length) {
-      currentNode = queue[0]
+    while (queue.length > 0) {
+      // Get current node
+      const currentNode = queue.shift()
       // Apply callback
       callback(currentNode)
 
-      // Push left child
+      // Push the left node into queue
       if (currentNode.left !== null) {
         queue.push(currentNode.left)
       }
 
-      // Push right child
+      // Push the right node into queue
       if (currentNode.right !== null) {
         queue.push(currentNode.right)
       }
-
-      // Remove first node
-      queue.shift(currentNode)
     }
   }
 
@@ -196,7 +193,7 @@ export default class Tree {
     // Base case
     if (!queue.length) return
 
-    // Apply callback
+    // Get current node and apply callback
     let currentNode = queue.shift()
     callback(currentNode)
 
@@ -207,103 +204,127 @@ export default class Tree {
     this.levelOrderRecursive(callback, queue)
   }
 
-  // Tree traversal starting with the root
+  /* Perform a pre-order traversal of the tree, visiting nodes in the order
+    of root, left, right */
   preOrder(callback) {
     // Throw error if the argument isn't a function
     if (typeof callback !== 'function') {
       throw new Error('No callback function passed')
     }
-    let currentNode = this.root
-    if (currentNode === null) return
-    // Initialize stack array
-    const stack = [currentNode]
+
+    // Base case
+    const root = this.root
+    if (root === null) return
+
+    // Initialize stack
+    const stack = [root]
 
     while (stack.length > 0) {
-      currentNode = stack.pop()
+      // Get current node and apply callback
+      let currentNode = stack.pop()
       callback(currentNode)
 
+      // Push the right node first and left node second to get the reverse order
       if (currentNode.right !== null) stack.push(currentNode.right)
       if (currentNode.left !== null) stack.push(currentNode.left)
     }
   }
 
-  // Recursive helper function with root first
+  /* A helper function for performing a pre-order traversal of the tree */
   traverseRootFirst(callback, currentNode) {
+    // Base case
     if (currentNode === null) return
+
+    // Do the callback first, then traverse left, then traverse right
     callback(currentNode)
     this.traverseRootFirst(callback, currentNode.left)
     this.traverseRootFirst(callback, currentNode.right)
   }
 
-  // Recursive method for pre-order traversal
+  /* A recursive method for pre-order tree traversal */
   preOrderRecursive(callback) {
-    // Throw error if the argument isn't a function
+    // Throw error if argument isn't a function
     if (typeof callback !== 'function') {
       throw new Error('No callback function passed')
     }
 
-    let currentNode = this.root
+    // Initialize current node
+    const currentNode = this.root
 
-    // Helper function
+    // Call recursive helper function
     this.traverseRootFirst(callback, currentNode)
   }
 
-  // Recursive helper function with root middle
+  /* A helper function for performing a in-order traversal of the tree */
   traverseRootMiddle(callback, currentNode) {
+    // Base case
     if (currentNode === null) return
 
+    // Traverse left, then root, then traverse right
     this.traverseRootMiddle(callback, currentNode.left)
     callback(currentNode)
     this.traverseRootMiddle(callback, currentNode.right)
   }
 
-  // Recursive method for in-order tree traversal
+  /* Performs an in-order traversal of the tree, visiting nodes in the
+   order of left, root, right */
   inOrder(callback) {
     // Throw error if argument isn't a function
     if (typeof callback !== 'function') {
       throw new Error('No callback function passed')
     }
 
-    let currentNode = this.root
+    // Initialize current node
+    const currentNode = this.root
 
+    // Call recursive helper function
     this.traverseRootMiddle(callback, currentNode)
   }
 
-  // Recursive helper function with root last
+  /* A helper function for performing a post-order traversal of the tree */
   traverseRootLast(callback, currentNode) {
+    // Base case
     if (currentNode === null) return
 
+    // Traverse left, then right, then root
     this.traverseRootLast(callback, currentNode.left)
-
     this.traverseRootLast(callback, currentNode.right)
     callback(currentNode)
   }
 
-  // Recursive method for post-order tree traversal
+  /* Perform a post-order traversal of the tree, visiting nodes in the order
+   of left, right, root */
   postOrder(callback) {
     // Throw error if argument isn't a function
     if (typeof callback !== 'function') {
       throw new Error('No callback function passed')
     }
 
-    let currentNode = this.root
+    // Initialize current node
+    const currentNode = this.root
 
+    // Call recursive helper function
     this.traverseRootLast(callback, currentNode)
   }
 
-  // Calculate the height of node iteratively
+  /* Calculate the height of the given node */
   calculateHeight(node) {
     // Start at -1 for edge based case
     let nodeHeight = -1
+
     // Initialize queue with matched node
-    let queue = [node]
+    const queue = [node]
+
     while (queue.length) {
       nodeHeight++
-      let levelNumber = queue.length
+      const levelNumber = queue.length
 
-      // Process all nodes in the same level
+      // Process all nodes in the same level in parallel
       for (let i = 0; i < levelNumber; i++) {
-        let currentNode = queue.shift()
+        // Get current node
+        const currentNode = queue.shift()
+
+        // Add left and right nodes to queue
         if (currentNode.left) {
           queue.push(currentNode.left)
         }
@@ -312,97 +333,100 @@ export default class Tree {
         }
       }
     }
-    // console.log('Node Height:', nodeHeight)
+
     return nodeHeight
   }
 
-  // Recursive function to get height of a node
-  getHeightRecursive(node) {
+  /* Recursively calculates the height of a binary tree from a given node */
+  calculateHeightRecursive(node) {
     // Base case
     if (node === null) return -1
 
     // Calculate heights of left and right sub-trees
-    let leftSubTreeHeight = this.getHeightRecursive(node.left)
-    let rightSubTreeHeight = this.getHeightRecursive(node.right)
+    const leftSubTreeHeight = this.calculateHeightRecursive(node.left)
+    const rightSubTreeHeight = this.calculateHeightRecursive(node.right)
 
     return Math.max(leftSubTreeHeight, rightSubTreeHeight) + 1
   }
 
-  // Find the height of the node with given value
+  /* Returns the height of the given node */
   height(value) {
     // Find the match
-    let matchedNode = this.find(value)
+    const matchedNode = this.find(value)
     if (!matchedNode) return null
 
     // return this.calculateHeight(matchedNode)
-    return this.getHeightRecursive(matchedNode)
+    return this.calculateHeightRecursive(matchedNode)
   }
 
-  // Get the depth of the node in binary tree
-  getDepthRecursive(node, targetValue) {
+  /* Recursive function to find the depth of given node */
+  getDepthRecursive(node, value) {
     // Base cases
     if (node === null) return null
-    if (targetValue === node.data) return 0
+    if (value === node.data) return 0
 
     // Value is less than current node value
-    if (targetValue < node.data) {
-      const leftDepth = this.getDepthRecursive(node.left, targetValue)
+    if (value < node.data) {
+      const leftDepth = this.getDepthRecursive(node.left, value)
       return leftDepth === null ? null : leftDepth + 1
     }
 
     // Value is greater than current node value
-    const rightDepth = this.getDepthRecursive(node.right, targetValue)
+    const rightDepth = this.getDepthRecursive(node.right, value)
     return rightDepth === null ? null : rightDepth + 1
   }
 
-  // Find the depth of given node
+  /* Calculates the depth of the given node from the root node */
   depth(value) {
-    let currentNode = this.root
+    const currentNode = this.root
 
     return this.getDepthRecursive(currentNode, value)
   }
 
-  // Recursive function to check the balance of a tree
+  /* Recursively checks if the tree is balanced starting from the given node */
   isBalancedRecursive(node) {
     // Base case
     if (node === null) return true
 
     // Get the heights of left and right sub-trees
-    const leftSubTreeHeight = this.getHeightRecursive(node.left)
-    const rightSubTreeHeight = this.getHeightRecursive(node.right)
+    const leftSubTreeHeight = this.calculateHeightRecursive(node.left)
+    const rightSubTreeHeight = this.calculateHeightRecursive(node.right)
 
     // Check the difference between the two
     if (Math.abs(leftSubTreeHeight - rightSubTreeHeight) > 1) return false
 
+    // Check balance of left and right sub-trees
     return (
       this.isBalancedRecursive(node.left) &&
       this.isBalancedRecursive(node.right)
     )
   }
 
-  // Check if tree is balanced
+  /* Checks if the tree is balanced */
   isBalanced() {
-    let root = this.root
+    // Initialize current node
+    const root = this.root
 
     return this.isBalancedRecursive(root)
   }
 
-  // Function to rebalance an unbalanced tree
+  /* Rebalance the tree if it is not balanced */
   rebalance() {
     // Check for the tree balance
     const balanced = this.isBalanced()
 
-
     if (!balanced) {
       const sortedArray = []
+
       // Create sorted array
-      this.inOrder(node => sortedArray.push(node.data))
+      this.inOrder((node) => sortedArray.push(node.data))
+
       // Build the tree again
       this.root = this.buildTree(sortedArray)
     }
   }
 
-  // Print node like a tree
+  /* Print the tree in a pretty format */
   prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node === null) {
       return
@@ -421,19 +445,3 @@ export default class Tree {
   }
 }
 
-const array = [
-  1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 25, 26, 27, 28, 29, 30, 67, 6345, 324, 6500,
-]
-// const array = [
-//   1, 7, 4, 23, 8, 9, 4, 2, 3, 5, 7, 9, 67, 6345, 324, 50, 100, 75, 85,
-// ]
-
-// Create an instance of Tree class
-const bst = new Tree(array)
-
-bst.insert(6501)
-
-// bst.prettyPrint(bst.root)
-
-bst.rebalance()
-// bst.prettyPrint(bst.root)
