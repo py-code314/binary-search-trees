@@ -12,7 +12,8 @@ function generateRandomArray() {
   return randomArray
 }
 
-const array = generateRandomArray()
+// const array = generateRandomArray()
+const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 
 // Generate tree
 const bst = new Tree(array)
@@ -80,5 +81,15 @@ bst.postOrder((node) => console.log(node.data))
 // Print rebalanced elements in in-order
 console.log('Print Rebalanced Elements in In-order:')
 bst.inOrder((node) => console.log(node.data))
+
+// Find and delete an item
+// console.log(bst.find(12))
+// bst.deleteItem(12)
+// bst.prettyPrint(bst.root)
+
+// Calculate height and depth of a node
+// console.log(bst.height(12))
+// console.log(bst.depth(2))
+
 
 
