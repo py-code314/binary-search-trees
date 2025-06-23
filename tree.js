@@ -2,7 +2,7 @@
 import Node from './node.js'
 
 // Tree class
-class Tree {
+export default class Tree {
   constructor(array) {
     this.array = array
     this.root = this.buildTree(this.array)
@@ -231,8 +231,8 @@ class Tree {
   traverseRootFirst(callback, currentNode) {
     if (currentNode === null) return
     callback(currentNode)
-    this.traverseTree(callback, currentNode.left)
-    this.traverseTree(callback, currentNode.right)
+    this.traverseRootFirst(callback, currentNode.left)
+    this.traverseRootFirst(callback, currentNode.right)
   }
 
   // Recursive method for pre-order traversal
@@ -433,7 +433,7 @@ const bst = new Tree(array)
 
 bst.insert(6501)
 
-bst.prettyPrint(bst.root)
+// bst.prettyPrint(bst.root)
 
 bst.rebalance()
-bst.prettyPrint(bst.root)
+// bst.prettyPrint(bst.root)
