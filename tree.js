@@ -6,7 +6,7 @@ class Tree {
   constructor(array) {
     this.array = array
     this.root = this.buildTree(this.array)
-    this.nodeDepth = 0
+    // this.nodeDepth = 0
   }
 
   // Helper function to process array
@@ -35,7 +35,6 @@ class Tree {
 
     // Create right sub tree
     rootNode.right = this.sortedArrayToBSTRecur(array, midIndex + 1, end)
-    // console.log(rootNode)
 
     return rootNode
   }
@@ -135,11 +134,11 @@ class Tree {
 
     while (currentNode) {
       if (value < currentNode.data) {
-        this.nodeDepth++
+        // this.nodeDepth++
         // console.log('Left:', this.nodeDepth)
         currentNode = currentNode.left
       } else if (value > currentNode.data) {
-        this.nodeDepth++
+        // this.nodeDepth++
         // console.log('Right:', this.nodeDepth)
         currentNode = currentNode.right
       } else {
@@ -388,6 +387,21 @@ class Tree {
     return this.isBalancedRecursive(root)
   }
 
+  // Function to rebalance an unbalanced tree
+  rebalance() {
+    // Check for the tree balance
+    const balanced = this.isBalanced()
+
+
+    if (!balanced) {
+      const sortedArray = []
+      // Create sorted array
+      this.inOrder(node => sortedArray.push(node.data))
+      // Build the tree again
+      this.root = this.buildTree(sortedArray)
+    }
+  }
+
   // Print node like a tree
   prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node === null) {
@@ -421,6 +435,5 @@ bst.insert(6501)
 
 bst.prettyPrint(bst.root)
 
-console.log(bst.depth(23))
-console.log(bst.depth(6501))
-console.log(bst.depth(650))
+bst.rebalance()
+bst.prettyPrint(bst.root)
