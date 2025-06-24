@@ -308,7 +308,7 @@ export default class Tree {
   }
 
   /* Calculate the height of the given node */
-  calculateHeight(node) {
+  calculateHeightIterative(node) {
     // Start at -1 for edge based case
     let nodeHeight = -1
 
@@ -355,7 +355,7 @@ export default class Tree {
     const matchedNode = this.find(value)
     if (!matchedNode) return null
 
-    // return this.calculateHeight(matchedNode)
+    // return this.calculateHeightIterative(matchedNode)
     return this.calculateHeightRecursive(matchedNode)
   }
 
