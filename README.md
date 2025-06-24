@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a solution for the [Binary Search Trees] project (https://www.theodinproject.com/lessons/javascript-binary-search-trees#project-solution). Goal of this project is to practice creating and manipulating balanced binary search trees. A `Tree` class is created with methods inside it to add, remove, find, and traverse the tree. We can also check if the tree is balanced or not by calling the respective method.
+This is a solution for the [Binary Search Trees](https://www.theodinproject.com/lessons/javascript-binary-search-trees#project-solution) project . Goal of this project is to practice creating and manipulating balanced binary search trees. A `Tree` class is created with methods inside it to add, remove, find, and traverse the tree. We can also check if the tree is balanced or not by calling the respective method.
 
 
 ### List of methods included:
@@ -22,14 +22,14 @@ This is a solution for the [Binary Search Trees] project (https://www.theodinpro
 - `height(value)`: Returns the height of the given node (number of edges between the node and the farthest leaf node).
 - `depth(value)`: Returns the depth of the given node from the root node (number of edges between the node and the root node).
 - `isBalanced()`: Returns true if the tree is balanced, false otherwise.
-- `rebalance()`: Rebalances the tree by adding missing nodes to make it balanced.
+- `rebalance()`: Rebalances the tree if it is not balanced.
 - `prettyPrint()`: Prints the tree in a pretty format.
 
 
 #### Helper methods:
 
 - `processArray(array)`: Returns a sorted array with duplicates removed.
-- `sortedArrayToBSTRecur(array, start, end)`: A recursive function to create a balanced binary search tree.
+- `sortedArrayToBSTRecursive(array, start, end)`: A recursive function to create a balanced binary search tree.
 - `insertRecursive(value, node)`: Recursively inserts a given value into the binary search tree.
 - `traverseRootFirst(callback, currentNode)`: A helper function for performing a pre-order traversal of the tree.
 - `traverseRootMiddle(callback, currentNode)`: A helper function for performing a in-order traversal of the tree.

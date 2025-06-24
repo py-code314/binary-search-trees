@@ -19,7 +19,7 @@ export default class Tree {
   }
 
   /* A recursive function to create a balanced binary search tree */
-  sortedArrayToBSTRecur(array, start, end) {
+  sortedArrayToBSTRecursive(array, start, end) {
     // Base case
     if (start > end) return null
 
@@ -30,10 +30,10 @@ export default class Tree {
     let rootNode = new Node(array[midIndex])
 
     // Create left sub tree
-    rootNode.left = this.sortedArrayToBSTRecur(array, start, midIndex - 1)
+    rootNode.left = this.sortedArrayToBSTRecursive(array, start, midIndex - 1)
 
     // Create right sub tree
-    rootNode.right = this.sortedArrayToBSTRecur(array, midIndex + 1, end)
+    rootNode.right = this.sortedArrayToBSTRecursive(array, midIndex + 1, end)
 
     return rootNode
   }
@@ -47,7 +47,7 @@ export default class Tree {
     const startIndex = 0
     const endIndex = processedArray.length - 1
 
-    return this.sortedArrayToBSTRecur(processedArray, startIndex, endIndex)
+    return this.sortedArrayToBSTRecursive(processedArray, startIndex, endIndex)
   }
 
   /* Recursively inserts a given value into the binary search tree */
